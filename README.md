@@ -32,6 +32,6 @@ The orb animation is [thinking-orbs](https://github.com/Jakubantalik/thinking-or
 
 ## Builds reel (the other half of the screen)
 
-**Open it:** https://ckruegs71-ctrl.github.io/prismagent-booth/reel.html
+**Open it:** https://ckruegs71-ctrl.github.io/prismagent-booth/builds.html
 
 Seven builds, each page scrolling slowly top to bottom with a one-line label. Every company name, person and logo in the screenshots is made up, and the numbers are samples. Screenshots live in `reel/`.

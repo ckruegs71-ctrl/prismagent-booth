@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>PrismAgent Builds Reel</title>
+<meta name="theme-color" content="#0a1220">
+<link rel="icon" href="icon-192.png">
+<style>
+/* Booth reel: real builds, sample data and made-up names, each page slowly scrolling top to bottom. */
+:root{--bg:#0a1220;--ink:#eef4f8;--ink2:#8698a3;--cyan:#00D4EB;--green:#0BEB7A}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:radial-gradient(ellipse at 50% 30%,#123360 0%,#0a1220 70%);color:var(--ink);font-family:"Segoe UI",system-ui,sans-serif;overflow:hidden;cursor:none}
+#top{position:absolute;top:0;left:0;right:0;height:9vh;display:flex;align-items:center;justify-content:center;gap:.6em;font-size:clamp(14px,2.2vh,24px);letter-spacing:.14em;text-transform:uppercase;color:var(--ink2)}
+#top b{color:var(--cyan);font-weight:600}
+#frame{position:absolute;top:9vh;bottom:22vh;left:50%;transform:translateX(-50%);width:min(92vw,1000px);border-radius:14px;overflow:hidden;background:#fff;box-shadow:0 20px 60px rgba(0,0,0,.55),0 0 0 1px rgba(0,212,235,.25)}
+.slide{position:absolute;inset:0;opacity:0;transition:opacity .9s ease;display:flex;justify-content:center;background:#f2f1ee}
+.slide.on{opacity:1}
+.slide img{display:block;width:100%;height:auto;align-self:flex-start;will-change:transform}
+.slide.narrow img{width:auto;max-width:100%}
+#cap{position:absolute;left:0;right:0;bottom:7vh;height:15vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 5vw;transition:opacity .5s}
+#cap h2{margin:0;font-size:clamp(20px,3.6vh,40px);font-weight:700;background:linear-gradient(90deg,var(--cyan),var(--green));-webkit-background-clip:text;background-clip:text;color:transparent}
+#cap p{margin:.4em 0 0;font-size:clamp(15px,2.3vh,26px);line-height:1.3;color:var(--ink);max-width:36em;text-wrap:balance}
+#foot{position:absolute;left:0;right:0;bottom:0;height:7vh;display:flex;align-items:center;justify-content:center;gap:1.2em;font-size:clamp(14px,2.4vh,26px);border-top:1px solid rgba(134,152,163,.18)}
+#foot .call{color:var(--green);font-weight:700}
+#foot span{color:var(--ink2)}
+#dots{position:absolute;top:calc(9vh - 14px);left:50%;transform:translateX(-50%);display:flex;gap:6px}
+#dots i{width:6px;height:6px;border-radius:50%;background:rgba(134,152,163,.35)}
+#dots i.on{background:var(--cyan)}
+</style>
+</head>
+<body>
+<div id="top"><b>Built by PrismAgent</b> · sample data, names changed</div>
+<div id="dots"></div>
+<div id="frame"></div>
+<div id="cap"><h2></h2><p></p></div>
+<div id="foot"><span class="call">Call 612-405-9802</span><span>PrismAgent Solutions</span></div>
+<script>
+const SLIDES = [
+  { img: 'reel/brief.jpg', narrow: true, title: 'The Morning Commodities Brief', text: 'Markets, plant bids and weather in one email, sent at 7:30 AM every weekday.' },
+  { img: 'reel/crew.jpg', title: 'Crew Time Board', text: 'Clock-in data turned into which properties ran over the bid, and by how much.' },
+  { img: 'reel/pulse.jpg', narrow: true, title: 'The Weekly Pulse', text: 'The owner’s week on one page: what’s off track and what to fix first.' },
+  { img: 'reel/vitals.jpg', title: 'Corn Vitals Board', text: 'Seven USDA numbers checked against normal, with the headline written for you.' },
+  { img: 'reel/wallet.jpg', title: 'Wallet Share Board', text: 'What every customer buys today, and what’s still left to sell them.' },
+  { img: 'reel/roof.jpg', narrow: true, title: 'Commercial Roofing Weekly', text: 'Price letters, storm reports and cost moves in one weekly email for contractors.' },
+  { img: 'reel/map.jpg', title: 'Automation Roadmap', text: 'Where the hand-typed work is, what gets built first, and what it’s worth.' }
+];
+const HOLD = 15000;      // time on each build
+const PAUSE = 1800;      // stay at the top before scrolling, and at the bottom before switching
+const frame = document.getElementById('frame'), cap = document.getElementById('cap'), dots = document.getElementById('dots');
+const els = SLIDES.map(s => {
+  const d = document.createElement('div'); d.className = 'slide' + (s.narrow ? ' narrow' : '');
+  const im = document.createElement('img'); im.src = s.img; im.alt = s.title; d.appendChild(im);
+  frame.appendChild(d); dots.appendChild(document.createElement('i'));
+  return { d, im };
+});
+let i = -1;
+function show() {
+  i = (i + 1) % SLIDES.length;
+  const s = SLIDES[i], e = els[i];
+  els.forEach((x, n) => x.d.classList.toggle('on', n === i));
+  [...dots.children].forEach((x, n) => x.classList.toggle('on', n === i));
+  cap.style.opacity = 0;
+  setTimeout(() => { cap.querySelector('h2').textContent = s.title; cap.querySelector('p').textContent = s.text; cap.style.opacity = 1; }, 450);
+  // slow scroll from the top of the page to the bottom
+  const im = e.im;
+  im.style.transition = 'none'; im.style.transform = 'translateY(0)';
+  const go = () => {
+    const travel = Math.max(0, im.getBoundingClientRect().height - frame.clientHeight);
+    if (!travel) return;
+    setTimeout(() => {
+      im.style.transition = `transform ${HOLD - PAUSE * 2}ms ease-in-out`;
+      im.style.transform = `translateY(-${travel}px)`;
+    }, PAUSE);
+  };
+  im.complete ? go() : (im.onload = go);
+}
+show();
+setInterval(show, HOLD);
+
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
+async function stayAwake() { try { await navigator.wakeLock?.request('screen'); } catch {} }
+stayAwake();
+document.addEventListener('visibilitychange', () => document.visibilityState === 'visible' && stayAwake());
+</script>
+</body>
+</html>

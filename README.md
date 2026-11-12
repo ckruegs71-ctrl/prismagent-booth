@@ -29,3 +29,9 @@ Then change `VERSION` in `sw.js`, commit and push.
 ## Credits
 
 The orb animation is [thinking-orbs](https://github.com/Jakubantalik/thinking-orbs) by Jakub Antalik, MIT License (see `LICENSE-thinking-orbs.txt`).
+
+## Builds reel (the other half of the screen)
+
+**Open it:** https://ckruegs71-ctrl.github.io/prismagent-booth/reel.html
+
+Seven builds, each page scrolling slowly top to bottom with a one-line label. Every company name, person and logo in the screenshots is made up, and the numbers are samples. Screenshots live in `reel/`.

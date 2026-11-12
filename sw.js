@@ -1,7 +1,7 @@
 // Keeps a copy of the booth page on the laptop after the first visit, so it still opens if the venue wifi drops.
 // Bump VERSION whenever index.html changes so laptops pick up the new copy.
-const VERSION = 'booth-v2';
-const FILES = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png'];
+const VERSION = 'booth-v3';
+const FILES = ['./', './index.html', './reel.html', './reel/brief.jpg', './reel/crew.jpg', './reel/pulse.jpg', './reel/vitals.jpg', './reel/wallet.jpg', './reel/roof.jpg', './reel/map.jpg', './manifest.webmanifest', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(VERSION).then((c) => c.addAll(FILES)).then(() => self.skipWaiting()));
